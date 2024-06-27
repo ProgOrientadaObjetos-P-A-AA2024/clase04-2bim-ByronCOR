@@ -16,124 +16,103 @@ public class Ejecutor2 {
 
     public static void main(String[] args) {
         Scanner entrada = new Scanner(System.in);
-        String nombresEst;
-        String arriendoMensual;
-        String cuotaBase;
-        int edadEst;
-        double costoCred;
-        int numeroCreds;
-        double costoAsig;
-        int numeroAsigs;
+        String nombreCentroComercial;
+        String nombreArrendatario;
+        String cadena;
+        double cuotaBase;
+
+        double valorAdicionalFijo;
+
+        double valorLuz;
+        double valorAgua;
+        double iva;
+
+        double valorSillas;
+        double valorAmplificacion;
+
         int tipoArriendo;
-        int nP = 0;
-        int nD = 0;
 
         ArrayList<Arriendo> listaArriendos = new ArrayList<>();
 
-        System.out.println("Cuantos interacciones van a ingresar");
+        System.out.printf("Ingrese el nombre del Centro Comercial: ");
+        nombreCentroComercial = entrada.nextLine();
+
+        System.out.println("Cuantos Locales van a arrendar: ");
         int n = entrada.nextInt();
 
         for (int i = 0; i < n; i++) {
 
-            System.out.printf("1: ArriendoLocalComercial"
-                    + "2: ArriendoLocalComida"
-                    + "3: ArriendoLocalSesiones");
+            System.out.printf("1: ArriendoLocalComercial\n"
+                    + "2: ArriendoLocalComida\n"
+                    + "3: ArriendoLocalSesiones\n");
 
             tipoArriendo = entrada.nextInt();
             entrada.nextLine();
 
-            System.out.println("Ingrese el nombre del arrendatario");
-            nombresEst = entrada.nextLine();
-            System.out.println("Ingrese el arriendo mensual");
-            arriendoMensual = entrada.nextLine();
-            System.out.println("Ingrese la cuota base");
+            System.out.println("Ingrese el nombre del arrendatario: ");
+            nombreArrendatario = entrada.nextLine();
+
+            System.out.println("Ingrese la cuota base: ");
             cuotaBase = entrada.nextDouble();
-          
 
             if (tipoArriendo == 1) {
-                System.out.println("Ingrese el número de créditos");
-                numeroCreds = entrada.nextInt();
-                System.out.println("Ingrese el costo de cada créditos");
-                costoCred = entrada.nextDouble();
+
+                System.out.println("Ingrese el valor adicional fijo: ");
+                valorAdicionalFijo = entrada.nextDouble();
+
                 ArriendoLocalComercial arriendoComercial = new ArriendoLocalComercial(
-                "Andrew Schroeder", 400);
-        arriendoComercial.establecerValorAdicionalFijo(100);
-                nP--;
+                        nombreArrendatario, cuotaBase, valorAdicionalFijo);
+                listaArriendos.add(arriendoComercial);
             } else {
                 if (tipoArriendo == 2) {
-                    System.out.println("Ingrese el número de asignaturas");
-                    numeroAsigs = entrada.nextInt();
-                    System.out.println("Ingrese el costo de cada asignatura");
-                    costoAsig = entrada.nextDouble();
-                    EstudianteDistancia estD = new EstudianteDistancia(nombresEst,
-                            apellidosEst,
-                            identificacionEst,
-                            edadEst,
-                            numeroAsigs, costoAsig);
-                    listaArriendos.add(estD);
-                    nD--;
-                }else{
-                if (tipoArriendo == 3) {
-                    System.out.println("Ingrese el número de asignaturas");
-                    numeroAsigs = entrada.nextInt();
-                    System.out.println("Ingrese el costo de cada asignatura");
-                    costoAsig = entrada.nextDouble();
-                    EstudianteDistancia estD = new EstudianteDistancia(nombresEst,
-                            apellidosEst,
-                            identificacionEst,
-                            edadEst,
-                            numeroAsigs, costoAsig);
-                    listaArriendos.add(estD);
-                    nD--;
-                }
+
+                    System.out.println("Ingrese el valor de la Luz: ");
+                    valorLuz = entrada.nextDouble();
+                    System.out.println("Ingrese el valor del Agua: ");
+                    valorAgua = entrada.nextDouble();
+                    System.out.println("Ingrese el valor del IVA: ");
+                    iva = entrada.nextDouble();
+                    ArriendoLocalComida arriendoComida = new ArriendoLocalComida(
+                            nombreArrendatario, cuotaBase, valorLuz, valorAgua, iva);
+
+                    listaArriendos.add(arriendoComida);
+
+                } else {
+                    if (tipoArriendo == 3) {
+                        System.out.println("Ingrese el costo de las sillas: ");
+                        valorSillas = entrada.nextDouble();
+                        System.out.println("Ingrese el costo de la Amplificacion: ");
+                        valorAmplificacion = entrada.nextDouble();
+                        entrada.nextLine();
+                        ArriendoLocalSesiones arriendoSesiones = new ArriendoLocalSesiones(
+                                nombreArrendatario, cuotaBase, valorSillas, valorAmplificacion);
+
+                        listaArriendos.add(arriendoSesiones);
+                    }
                 }
             }
         }
 
         // ciclo que permite comprobar el polimorfismo
         // este código no debe ser modificado.
-        for (int i = 0;
-                i < listaArriendos.size();
-                i++) {
-            // 1.  
-            listaArriendos.get(i).calcularMatricula();
+        cadena = String.format("\nDATOS CENTRO COMERCIAL\n"
+                + "-----------------------------------\n"
+                + "Nombre del Centro Comercial: %s\n\n"
+                + "---------LISTA DE LOCALES----------\n\n", nombreCentroComercial);
 
-            System.out.printf("Lista Arriendos\n"
+        for (int i = 0; i < listaArriendos.size(); i++) {
+            // 1.  
+            listaArriendos.get(i).establecerArriendoMensual();
+
+            cadena = String.format("\n%s(%d) "
                     + "%s\n",
+                    cadena,
+                    i + 1,
                     listaArriendos.get(i));
 
         }
 
-        ArrayList<Arriendo> listaArriendos = new ArrayList<>();
-
-        ArriendoLocalComida arriendoComida = new ArriendoLocalComida(
-                "Christian Shepherd", 300);
-        arriendoComida.establecerIva(10); // en porcentaje
-        arriendoComida.establecerValorAgua(20.2); // en $
-        arriendoComida.establecerValorLuz(40.2); // en $
-
-        ArriendoLocalComercial arriendoComercial = new ArriendoLocalComercial(
-                "Andrew Schroeder", 400);
-        arriendoComercial.establecerValorAdicionalFijo(100); // en $
-
-        ArriendoLocalSesiones arriendoSesiones = new ArriendoLocalSesiones(
-                "Angela Watson", 350);
-        arriendoSesiones.establecerValorSillas(10); // en $
-        arriendoSesiones.establecerValorAmplificacion(20); // en $
-
-        listaArriendos.add(arriendoComida);
-        listaArriendos.add(arriendoComercial);
-        listaArriendos.add(arriendoSesiones);
-
-        for (int i = 0; i < listaArriendos.size(); i++) {
-            listaArriendos.get(i).establecerArriendoMensual();
-        }
-
-        CentroComercial centro = new CentroComercial("La Pradera",
-                listaArriendos);
-        centro.establecerTotalArriendosBaseMensual();
-        centro.establecerTotalArriendosFinalMensual();
-        System.out.println(centro);
+        System.out.printf(cadena);
 
     }
 }
